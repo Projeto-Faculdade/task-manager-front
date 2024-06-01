@@ -22,10 +22,11 @@ export default {
     },
     methods:{
         listarEstudantes(){
-            this.abortController = new AbortController(); // Cria uma nova instância do AbortController
-            const signal = this.abortController.signal; // Obtém o sinal do controlador
+            this.abortController = new AbortController(); 
+            const signal = this.abortController.signal;
+            let url = "https://b5cced4c-3b38-4f19-b6b3-3e9155354b49.mock.pstmn.io"
             
-            fetch('https://b5cced4c-3b38-4f19-b6b3-3e9155354b49.mock.pstmn.io/api/v1/students', {
+            fetch(url + '/api/v1/students', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

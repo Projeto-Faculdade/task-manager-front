@@ -68,6 +68,8 @@ export default {
     },
     cadastarEstudante(){
       let data = this.formData
+      let url = "https://b5cced4c-3b38-4f19-b6b3-3e9155354b49.mock.pstmn.io"
+            
 
       if(data.preferredLanguage == "" || data.email == "" || data.name == ""){
         this.camposVazios = true 
@@ -78,7 +80,7 @@ export default {
       }else{
         this.camposVazios = false;
 
-      fetch('https://b5cced4c-3b38-4f19-b6b3-3e9155354b49.mock.pstmn.io/api/v1/students', {
+      fetch(url + '/api/v1/students', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
@@ -93,6 +95,12 @@ export default {
 
         console.log("Dados enviados")
         this.responseMessage = data.message;
+        if (this.$refs.listagem && Array.isArray(this.$refs.listagem.studants)) {
+            this.$refs.listagem.studants.push(data);
+            console.log('enviado');
+          } else {
+            console.error('ListaComponent or studants array is not available');
+          }
       })
       .catch(error => {
         console.error('Erro ao enviar dados:', error);
