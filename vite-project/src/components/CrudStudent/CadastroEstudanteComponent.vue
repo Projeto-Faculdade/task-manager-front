@@ -1,41 +1,45 @@
 <template>
   <div class="container">
+    <div class="containerCard">
     <div class="card">
+      <div class="formsContainer">
       <h1>Cadastro estudante</h1>
       <input v-model="formData.name" class="nome" type="nome" placeholder="Nome">
       <input v-model="formData.email" class="email" type="email" placeholder="Email">
-      <select v-model="formData.preferredLanguage" placeholder="Select language">
+      <select v-model="formData.preferredLanguage">
         <option disabled value="">Select language</option>
-        <option value="en">Ingles</option>
+        <option value="en">English</option>
+        <option value="pt-br">Português</option>
+        <option value="sp">Spanish</option>
       </select>
       <div class="buttons">
-        <button @click="cadastarEstudante">CADASTRAR ESTUDANTE</button>
-      <!-- <button @click="entrar">Entrar</button> -->
-      <button  @click="listarEstudantes">LISTAR ESTUDANTES</button>
+        <div class="buttonsLog">
+          <router-link to="/login">
+          <button class="entrar" @click="login">LOGIN</button>
+          </router-link>
+          <button @click="cadastarEstudante">CADASTRAR ESTUDANTE</button>
+        </div>
+        <button @click="listarEstudantes">LISTAR ESTUDANTES</button>
+      </div>
+      </div>
+
+      <div class="listar" v-if="listar">
+        <div>
+          <h1 class="listagem">Listagem</h1>
+          <div class="underline"></div>
+          <ListaComponent ref="listagem" />
+        </div>
+      </div>
+      <div class="seta" v-if="listar" @click="listar = !listar">
+        <h1>&lt;</h1>
       </div>
     </div>
 
-      <div class="card listar" v-if="listar">
-        <div>
-        <h1 class="listagem">Listagem</h1>
-        <div class="underline"></div>
-        <ListaComponent ref="listagem" />
-        </div>
-        
-      </div>
+    <div class="camposVazios" v-if="camposVazios">
+      <h2>Há campos vaios</h2>
+    </div>
 
-      <div class="card seta" v-if="listar" @click="listar = !listar">
-        <h1>&lt;</h1>
-      </div>
-      
-      
-    
-
-  <div class="camposVazios" v-if="camposVazios">
-    <h2>Há campos vaios</h2>
   </div>
-
-  
 
   </div>
 </template>
@@ -47,7 +51,6 @@ export default {
   name: 'CadastroEstudanteComponent',
   components: {
     ListaComponent
-
   },
   data() {
       return {
@@ -95,12 +98,9 @@ export default {
 
         console.log("Dados enviados")
         this.responseMessage = data.message;
-        if (this.$refs.listagem && Array.isArray(this.$refs.listagem.studants)) {
-            this.$refs.listagem.studants.push(data);
-            console.log('enviado');
-          } else {
-            console.error('ListaComponent or studants array is not available');
-          }
+        if (this.listar !== false) {
+          this.$refs.listagem.listarEstudantes()
+          } 
       })
       .catch(error => {
         console.error('Erro ao enviar dados:', error);
@@ -110,9 +110,10 @@ export default {
 
     
     }
+    
 
 
-      this.$emit('handleCadastarIdioma', true)
+      
     },
     entrar(){
       
@@ -126,13 +127,15 @@ export default {
 
 <style scoped>
 .listar{
-  flex-direction: row;
-  display: flex;
+  margin-left: 3rem;
+
 }
 .seta{
+  margin-left: 2rem;
   cursor: pointer;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .listagem{
   display: flex;
@@ -144,14 +147,17 @@ export default {
 }
 
 .card{
-  
   display: flex;
-  flex-direction: column;
-  padding: 3rem 2rem ;
+  padding: 3rem 2rem;
   background-color: #fff;
-
   
 }
+
+.formsContainer{
+  display: flex;
+  flex-direction: column;
+}
+
 h1{
   margin-left: auto;
   margin-right: auto;
@@ -195,6 +201,7 @@ input::placeholder {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
+
 }
 
 .camposVazios{
@@ -209,6 +216,27 @@ input::placeholder {
 }
 
 .container{
+  height: 100vh;
+  background-color: #7AC9F5;;
+}
+.containerCard{
+  height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.entrar{
+  color: #36769A;;
+  border: 1px solid #36769A;
+  background-color: #fff;
+}
+
+.entrar:hover{
+  color: #fff;
+}
+.buttonsLog{
+  display: flex;
+  flex-grow: 1;
+
 }
 </style>
