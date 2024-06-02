@@ -1,60 +1,23 @@
 <template>
-  <div>
-    <div v-if="!loginOK" class="container_cadastro">
-      <div  >
-        <CadastroEstudante @handleEntrar="entrar" />
-        
-      </div>
-    </div>
-
-    
-
+  <div id="app" >
+    <router-view></router-view>
   </div>
 
 
 </template>
 
 <script>
-import CadastroEstudante from './components/CrudStudent/CadastroEstudanteComponent.vue';
-export default{
-  components: {
-    CadastroEstudante,
 
-  },
-  data(){
-    return{
-
-      loginOK: false
-    }
-  },
-  methods: {
-    entrar(){
-      
-    }
-  },
-}
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-.container_cadastro{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  background-color:#7AC9F5;
 
-}
-
-.container_cadastro_ok{
-  background-color: #fff;
-}
-
-.task{
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
-  width: 100vw;
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
 }
 </style>
