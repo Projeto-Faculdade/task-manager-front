@@ -1,6 +1,8 @@
 <template>
   <div class="container">
+
     <MenuComponentVue :studant="studentData" @handleChange="change" @updateChangeLanguage="changeLanguage" @updateTasks="novaTask"/>
+
     <div class="task" v-for="task in tasks" :key="task.id">
       <TaskComponent @updateTask="novaTask" :task="task" />
     </div>
@@ -36,6 +38,7 @@ export default {
   },
   methods: {
     changeLanguage(){
+
       this.novaTask()
     },
     change(){
@@ -43,13 +46,16 @@ export default {
     },
     novaTask(){
 
+
       let url = "http://localhost:5071/"
 
       fetch(url + `api/v1/students/${this.id}/tasks`, {
       method: 'GET',
       headers: {
+
         'Content-Type': 'application/json',
         'Accept-Language': localStorage.getItem('student_preferredLanguage')
+
       }
       })
       .then(response => {
@@ -90,9 +96,11 @@ export default {
         })
         .then(text => {
           try {
+
             const data = JSON.parse(text)
             this.studentData = data
             this.language = this.studentData.preferredLanguage
+
           } catch (err) {
             console.error('Ta dando merda', err); 
           }

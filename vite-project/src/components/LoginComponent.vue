@@ -68,6 +68,7 @@ export default {
           } else {
             this.dadosnaoencontrados();
           }
+
           
           localStorage.setItem("student_preferredLanguage", data.preferredLanguage)
         })

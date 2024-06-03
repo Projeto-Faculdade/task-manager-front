@@ -1,0 +1,10 @@
+{
+    "salutation": {
+        "LabelAdd": "Adicionar",
+        "ChangeButton": "Mudar idioma",
+        "Language": "Português",
+        "Course": "Curso",
+        "Texto": "Alterne entre idiomas com um clique",
+        "AtividadeVazia": "Não possui atividades cadastradas"
+    }
+}
