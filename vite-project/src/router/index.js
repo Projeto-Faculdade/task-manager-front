@@ -10,13 +10,15 @@ const router = createRouter({
     {
       path: "/login",
       component: LoginComponent,
+      
     },
     {
       path: "/cadastro",
       component: CadastroEstudanteComponent,
     },
     {
-      path: "/aluno",
+      path: "/aluno/:id",
+      name: 'aluno',
       component: AlunoViews,
     },
   ],

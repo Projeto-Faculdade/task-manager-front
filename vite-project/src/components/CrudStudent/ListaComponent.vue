@@ -24,10 +24,10 @@ export default {
         listarEstudantes() {
             this.abortController = new AbortController();
             const signal = this.abortController.signal;
-            let url = "https://b5cced4c-3b38-4f19-b6b3-3e9155354b49.mock.pstmn.io"
+            let url = "http://localhost:5071/"
 
-            fetch(url + '/api/v1/students', {
-                method: 'GET',
+            fetch(url + 'api/v1/students', {
+                method: 'GET',  
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -39,9 +39,11 @@ export default {
                     return response.text(); 
                 })
                 .then(text => {
+                    
                     try {
                         const data = JSON.parse(text);
                         this.studants = data;
+                        console.log("to aqui", data)
 
                     } catch (error) {
                         console.error('Erro ao analisar JSON:', error, text);
