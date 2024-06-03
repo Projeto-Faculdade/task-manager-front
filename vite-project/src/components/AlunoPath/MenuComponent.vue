@@ -45,7 +45,7 @@ export default {
     methods: {
         handleButtonClick() {
             this.changeLanguage();
-            this.putStudant();
+
         },
         addNovaTask() {
             this.novaTask = !this.novaTask;
@@ -55,7 +55,13 @@ export default {
         },
         changeLanguage() {
             this.language = this.language === 'en' ? 'pt' : 'en';
+
+
+            localStorage.setItem("student_preferredLanguage", this.language)
             this.$i18n.locale = this.language;
+
+            this.$emit('handleChange')
+            // this.putStudant();
         },
         putStudant() {
             const url = `http://localhost:5071/api/v1/students/${this.studant.id}`;
