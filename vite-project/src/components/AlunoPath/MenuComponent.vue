@@ -8,7 +8,6 @@
 
 
         <div class="buttons">
-            <div></div>
             <div @click="addNovaTask" class="mais"><Icon icon="ph:plus-bold" /></div>
         </div>
 

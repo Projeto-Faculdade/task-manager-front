@@ -71,7 +71,7 @@ export default {
     },
     cadastarEstudante(){
       let data = this.formData
-      let url = "https://b5cced4c-3b38-4f19-b6b3-3e9155354b49.mock.pstmn.io"
+      let url = "http://localhost:5071"
             
 
       if(data.preferredLanguage == "" || data.email == "" || data.name == ""){
@@ -96,7 +96,6 @@ export default {
         this.formData.email = ""
         this.formData.preferredLanguage = ""
 
-        console.log("Dados enviados")
         this.responseMessage = data.message;
         if (this.listar !== false) {
           this.$refs.listagem.listarEstudantes()

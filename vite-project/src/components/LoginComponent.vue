@@ -2,47 +2,88 @@
   <div class="container">
     <div class="card">
       <h1>Entrar</h1>
-      <input class="idioma" type="nome" placeholder="Email">
-      <select v-model="formData.preferredLanguage">
-        <option disabled value="">Select language</option>
-        <option value="en">English</option>
-        <option value="pt-br">Português</option>
-        <option value="sp">Spanish</option>
-      </select>
+      <input class="idioma" v-model="formData.email" type="nome" placeholder="Email">
       <div class="buttons">
-        <router-link to="/aluno">
+        
           <button @click="fazerLogin">ENTRAR</button>
-        </router-link>
+       
         <router-link to="/cadastro">
-        <button class="cadastro" @click="entrar">CADASTRAR</button>
-      </router-link>
+          <button class="cadastro" @click="entrar">CADASTRAR</button>
+        </router-link>
       </div>
+    </div>
+
+    <div class="campoNaoEncontrado" v-if="campoNaoEncontrado">
+      <h2>Dados não encontrados</h2>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   data() {
-      return {
-        formData: {
-          email: "",
-          preferredLanguage: ""
-        }        
-      }
-    },
+    return {
+      formData: {
+        email: "",
+      },
+      campoNaoEncontrado: false
+    }
+  },
   methods: {
-    fazerLogin(){
-    this.$emit('handleEntrarAluno', true)
+    dadosnaoencontrados(){
+      
+        this.campoNaoEncontrado = true
+        setTimeout(() => {
+          this.campoNaoEncontrado = false;
+        }, 1500);
+        
+    },
+    fazerLogin() {
+      let url = "http://localhost:5071/"
+      let email = this.formData.email
+
+      if(email === ''){
+        this.dadosnaoencontrados()
+      return
+      }
+
+    
+      fetch(url + 'api/v1/students/'+ email, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+          this.dadosnaoencontrados()
+            
+            throw new Error('Erro ao obter os dados');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data && data.id) {
+            console.log(data.id)
+            this.$router.push({ name: 'aluno', params: { id: data.id } });
+          } else {
+            this.dadosnaoencontrados();
+          }
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          this.dadosnaoencontrados();
+        });
     },
   },
-  
+
 
 }
 </script>
 
 <style scoped>
-.container{
+.container {
   justify-content: center;
   align-items: center;
   display: flex;
@@ -50,22 +91,25 @@ export default {
   height: 100vh;
   background-color: #7AC9F5;
 }
-.card{
+
+.card {
   width: 30%;
   display: flex;
   flex-direction: column;
   padding: 3rem 2rem;
   background-color: #fff;
-  
+
 }
-h1{
+
+h1 {
   margin-left: auto;
   margin-right: auto;
   padding: 1rem;
   color: #36769A;
 }
 
-input, select{
+input,
+select {
   width: 100%;
   color: #36769A;
   margin: .5rem .3rem;
@@ -74,7 +118,7 @@ input, select{
   background-color: #D9D9D9;
 }
 
-button{
+button {
   cursor: pointer;
   font-weight: 600;
   font-size: 18px;
@@ -88,27 +132,42 @@ button{
 
 }
 
-button:hover{
+button:hover {
   background-color: #36769A;
 }
-input:focus{
+
+input:focus {
   outline: none;
   border: none;
 }
+
 input::placeholder {
-  color:  #36769A; /* Cor do placeholder */
+  color: #36769A;
+  /* Cor do placeholder */
 }
 
 .buttons {
-  
+
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.cadastro{
-  color: #36769A;;
+.cadastro {
+  color: #36769A;
+  ;
   border: 1px solid #36769A;
   background-color: #fff;
+}
+
+.campoNaoEncontrado{
+  position: absolute; 
+  top: 50%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 3rem;
+  border: 1px solid #36769A;
+  color: #36769A;
 }
 </style>
