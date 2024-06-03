@@ -2,8 +2,8 @@
   <div class="container_nova_task">
     <input class="input" type="text" v-model="dataTasks.name_Pt" placeholder="Nova atividade Portugues">
     <input class="input" type="text" v-model="dataTasks.name_En" placeholder="New activity English">
-    <input class="input" type="text" v-model="dataTasks.course"  placeholder="Curso">
-    <button @click="addTask">ADICIONAR</button>
+    <input class="input" type="text" v-model="dataTasks.course" :placeholder="$t('salutation.Course')">
+    <button @click="addTask">{{ $t('salutation.LabelAdd') }}</button>
   </div>
 </template>
 
@@ -12,20 +12,21 @@ export default {
   props: {
     newTask: Object
   },
-  data(){
-    return{
+  data() {
+    return {
+      dataTasks: {
+        name_Pt: '',
+        name_En: '',
+        course: '',
+        limitDate: '',
+        studentId: '',
+      },
+      language: this.newTask.preferredLanguage
 
-    dataTasks: {
-      name_Pt: '',
-      name_En: '',
-      course: '',
-      limitDate: '',
-      studentId: '',
-    }}
+    }
   },
   methods: {
     addTask() {
-
       const currentDate = new Date();
       this.dataTasks.limitDate = currentDate.toISOString();
       this.dataTasks.studentId = this.newTask.id
@@ -38,23 +39,26 @@ export default {
         },
         body: JSON.stringify(this.dataTasks)
       })
-      .then(response => response.json())
-      .then(data => {
-        this.name_Pt = ''
-        this.name_En = ''
-        this.course = ''
-        this.limitDate = ''
-        this.studentId = ''
+        .then(response => response.json())
+        .then(data => {
+          this.resetForm();
+          this.$emit('toggleNovaTask', false)
+          this.$emit('updateTasks')
+        })
+        .catch(error => {
+          console.error('Erro ao enviar dados:', error);
+          this.responseMessage = 'Erro ao enviar dados';
+        });
 
-        this.$emit('toggleNovaTask', false)
-      })
-      .catch(error => {
-        console.error('Erro ao enviar dados:', error);
-        this.responseMessage = 'Erro ao enviar dados';
-      });
+    },
 
-      console.log(this.dataTasks)
-    }
+    resetForm() {
+      this.dataTasks.name_Pt = '';
+      this.dataTasks.name_En = '';
+      this.dataTasks.course = '';
+      this.dataTasks.limitDate = '';
+      this.dataTasks.studentId = '';
+    },
   },
 }
 </script>
@@ -97,7 +101,4 @@ button {
 button:hover {
   background-color: #36769A;
 }
-
-
-
 </style>

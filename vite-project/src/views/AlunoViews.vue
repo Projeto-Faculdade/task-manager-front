@@ -1,9 +1,11 @@
 <template>
   <div class="container">
-    <MenuComponentVue :studant="studentData" />
+    <MenuComponentVue :studant="studentData" @updateChangeLanguage="changeLanguage" @updateTasks="novaTask"/>
     <div class="task" v-for="task in tasks" :key="task.id">
-      <TaskComponent :task="task" />
+      <TaskComponent @updateTask="novaTask" :task="task" />
     </div>
+
+    <div v-if="vazioTask" class="vazio_task">{{ $t('salutation.AtividadeVazia') }}</div>
   </div>
 </template>
 
@@ -19,7 +21,9 @@ export default {
   },
   data() {
     return {
+      language: '',
       tasks: [],
+      vazioTask: true,
       id: '',
       studentData: []
       
@@ -31,10 +35,13 @@ export default {
     this.novaTask()
   },
   methods: {
+    changeLanguage(){
+      console.log("to aqui")
+      this.novaTask()
+    },
+
     novaTask(){
       let url = "http://localhost:5071/"
-
-      console.log(this.id)
 
       fetch(url + `api/v1/students/${this.id}/tasks`, {
       method: 'GET',
@@ -52,6 +59,7 @@ export default {
           try {            
             const data = JSON.parse(text)
             this.tasks = data
+            this.vazioTask = this.tasks.length === 0;
 
           } catch (err) {
             console.error('Ta dando merda', err); 
@@ -60,9 +68,6 @@ export default {
         .catch(error => {
           console.error('Erro ao obter os dados do aluno:', error);
         });
-
-        console.log(this.tasks)
-
 
     },
     fetchStudentData() {
@@ -85,8 +90,6 @@ export default {
 
             const data = JSON.parse(text)
             this.studentData = data
-            console.log(this.studentData)
-
           } catch (err) {
             console.error('Ta dando merda', err); 
           }
@@ -102,6 +105,16 @@ export default {
 
 <style scoped>
 .task {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vazio_task{
+  color: #36759a79;
+  font-weight: 600;
+  font-size: 1.5rem;
   margin-top: 1rem;
   display: flex;
   justify-content: center;

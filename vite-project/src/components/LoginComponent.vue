@@ -64,7 +64,6 @@ export default {
         })
         .then(data => {
           if (data && data.id) {
-            console.log(data.id)
             this.$router.push({ name: 'aluno', params: { id: data.id } });
           } else {
             this.dadosnaoencontrados();
