@@ -43,7 +43,6 @@ export default {
                     try {
                         const data = JSON.parse(text);
                         this.studants = data;
-                        console.log("to aqui", data)
 
                     } catch (error) {
                         console.error('Erro ao analisar JSON:', error, text);
