@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     dadosnaoencontrados(){
-      
         this.campoNaoEncontrado = true
         setTimeout(() => {
           this.campoNaoEncontrado = false;

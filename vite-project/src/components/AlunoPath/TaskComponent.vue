@@ -7,8 +7,8 @@
                 </div>
             </div>
 
-            <div v-else class="container_task">
-                <div>{{ task.text }}</div>
+            <div v-else class="container_task" >
+                <div>{{ task.name }}</div>
                 <div class="icones">
                     <div class="lixo icone">
                         <Icon icon="mdi:trash-outline" />
@@ -31,7 +31,7 @@ export default {
     data() {
         return {
             isEditing: false,
-            editedText: this.task.text,
+            editedText: this.task.name,
         };
     },
     components: {

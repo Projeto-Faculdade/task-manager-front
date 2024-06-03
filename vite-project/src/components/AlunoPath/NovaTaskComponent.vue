@@ -1,15 +1,59 @@
 <template>
   <div class="container_nova_task">
-    <input class="input" type="text" placeholder="Nova atividade">
+    <input class="input" type="text" v-model="dataTasks.name_Pt" placeholder="Nova atividade Portugues">
+    <input class="input" type="text" v-model="dataTasks.name_En" placeholder="New activity English">
+    <input class="input" type="text" v-model="dataTasks.course"  placeholder="Curso">
     <button @click="addTask">ADICIONAR</button>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    newTask: Object
+  },
+  data(){
+    return{
+
+    dataTasks: {
+      name_Pt: '',
+      name_En: '',
+      course: '',
+      limitDate: '',
+      studentId: '',
+    }}
+  },
   methods: {
     addTask() {
-      this.$emit('toggleNovaTask', false)
+
+      const currentDate = new Date();
+      this.dataTasks.limitDate = currentDate.toISOString();
+      this.dataTasks.studentId = this.newTask.id
+
+      let url = "http://localhost:5071/"
+      fetch(url + 'api/v1/tasks', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.dataTasks)
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.name_Pt = ''
+        this.name_En = ''
+        this.course = ''
+        this.limitDate = ''
+        this.studentId = ''
+
+        this.$emit('toggleNovaTask', false)
+      })
+      .catch(error => {
+        console.error('Erro ao enviar dados:', error);
+        this.responseMessage = 'Erro ao enviar dados';
+      });
+
+      console.log(this.dataTasks)
     }
   },
 }
