@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <MenuComponentVue />
+    <MenuComponentVue :studant="studentData" />
     <div class="task" v-for="task in tasks" :key="task.id">
       <TaskComponent :task="task" />
     </div>
@@ -19,18 +19,52 @@ export default {
   },
   data() {
     return {
-      tasks: [
-        { id: 1, text: "Leer 3 páginas del libro favorito." },
-      ],
+      tasks: [],
       id: '',
       studentData: []
+      
     }
   },
   created() {
     this.id = this.$route.params.id
     this.fetchStudentData();
+    this.novaTask()
   },
   methods: {
+    novaTask(){
+      let url = "http://localhost:5071/"
+
+      console.log(this.id)
+
+      fetch(url + `api/v1/students/${this.id}/tasks`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+      })
+      .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao obter os dados do aluno');
+          }
+          return response.text(); 
+        })
+        .then(text => {
+          try {            
+            const data = JSON.parse(text)
+            this.tasks = data
+
+          } catch (err) {
+            console.error('Ta dando merda', err); 
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao obter os dados do aluno:', error);
+        });
+
+        console.log(this.tasks)
+
+
+    },
     fetchStudentData() {
       let url = "http://localhost:5071/"
 

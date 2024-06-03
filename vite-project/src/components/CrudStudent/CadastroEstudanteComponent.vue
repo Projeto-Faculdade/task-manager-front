@@ -10,7 +10,6 @@
         <option disabled value="">Select language</option>
         <option value="en">English</option>
         <option value="pt-br">Português</option>
-        <option value="sp">Spanish</option>
       </select>
       <div class="buttons">
         <div class="buttonsLog">

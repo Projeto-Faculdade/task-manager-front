@@ -2,8 +2,9 @@
     <div class="cantainer">
 
         <div class="infos">
-            <h1>Amanda Souza</h1>
-            <h4>Espanhol</h4>
+            <h1>{{ studant.name }}</h1>
+            <h4 v-if="studant.preferredLanguage === 'en'">English</h4>
+            <h4 v-if="studant.preferredLanguage === 'pt-br'">Português</h4>
         </div>
 
 
@@ -12,7 +13,7 @@
         </div>
 
         <div class="nova_task" v-if="novaTask">
-            <NovaTaskComponentVue @toggleNovaTask="addNovaTask"/>
+            <NovaTaskComponentVue :newTask="studant" @toggleNovaTask="addNovaTask"/>
         </div>
 
         
@@ -25,7 +26,9 @@ import { Icon } from '@iconify/vue';
 import NovaTaskComponentVue from './NovaTaskComponent.vue';
 
 export default {
-    
+    props: {
+        studant: Object 
+    },
     components: {
         Icon,
         NovaTaskComponentVue
